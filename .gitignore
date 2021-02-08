@@ -1,0 +1,17 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+
+# Venv
+/venv/*
+/dbnavigator.xml
+/misc.xml
+/modules.xml
+/inspectionProfiles/profiles_settings.xml
+/python3-midi.iml
+/vcs.xml
