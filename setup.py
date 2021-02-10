@@ -5,13 +5,13 @@ from setuptools import setup, Extension
 import setuptools.command.install
 
 __base__ = {
-    'name':'midi', 
-    'version':'v0.2.3',
+    'name':'midi3',
+    'version':'v0.0.1',
     'description':'Python MIDI API',
-    'author':'giles hall',
-    'author_email':'ghall@csh.rit.edu',
-    'package_dir':{'midi':'src'},
-    'py_modules':['midi.containers', 'midi.__init__', 'midi.events', 'midi.util', 'midi.fileio', 'midi.constants'],
+    'author':'giles hall, adam suki',
+    'author_email':'ghall@csh.rit.edu, outlyingdo@gmail.com',
+    'package_dir':{'midi3':'src'},
+    'py_modules':['midi3.containers', 'midi3.__init__', 'midi3.events', 'midi3.util', 'midi3.fileio', 'midi3.constants'],
     'ext_modules':[],
     'ext_package':'',
     'scripts':['scripts/mididump.py', 'scripts/mididumphw.py', 'scripts/midiplay.py'],
@@ -47,11 +47,11 @@ def setup_alsa(ns):
     ext = Extension('_sequencer_alsa', srclist, **extns)
     ns['ext_modules'].append(ext)
 
-    ns['package_dir']['midi.sequencer'] = 'src/sequencer_alsa'
-    ns['py_modules'].append('midi.sequencer.__init__')
-    ns['py_modules'].append('midi.sequencer.sequencer')
-    ns['py_modules'].append('midi.sequencer.sequencer_alsa')
-    ns['ext_package'] = 'midi.sequencer'
+    ns['package_dir']['midi3.sequencer'] = 'src/sequencer_alsa'
+    ns['py_modules'].append('midi3.sequencer.__init__')
+    ns['py_modules'].append('midi3.sequencer.sequencer')
+    ns['py_modules'].append('midi3.sequencer.sequencer_alsa')
+    ns['ext_package'] = 'midi3.sequencer'
     ns['cmdclass'] = {'install': Install_Command_build_ext_first}
 
 def configure_platform():
@@ -62,7 +62,7 @@ def configure_platform():
         setup_alsa(ns)
         pass
     else:
-        print "No sequencer available for '%s' platform." % platform
+        print("No sequencer available for {} platform.".format(platform))
     return ns
 
 if __name__ == "__main__":

@@ -1,0 +1,15 @@
+README.md
+setup.py
+midi3.egg-info/PKG-INFO
+midi3.egg-info/SOURCES.txt
+midi3.egg-info/dependency_links.txt
+midi3.egg-info/top_level.txt
+scripts/mididump.py
+scripts/mididumphw.py
+scripts/midiplay.py
+src/__init__.py
+src/constants.py
+src/containers.py
+src/events.py
+src/fileio.py
+src/util.py

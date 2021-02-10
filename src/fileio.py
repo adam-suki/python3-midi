@@ -1,10 +1,10 @@
 from warnings import *
 
-from containers import *
-from events import *
+from .containers import *
+from .events import *
 from struct import unpack, pack
-from constants import *
-from util import *
+from .constants import *
+from .util import *
 
 class FileReader(object):
     def read(self, midifile):
@@ -16,8 +16,8 @@ class FileReader(object):
     def parse_file_header(self, midifile):
         # First four bytes are MIDI header
         magic = midifile.read(4)
-        if magic != 'MThd':
-            raise TypeError, "Bad header in MIDI file."
+        if magic.decode('UTF-8') != 'MThd':
+            raise TypeError("Bad header in MIDI file.", repr(magic))
         # next four bytes are header size
         # next two bytes specify the format version
         # next two bytes specify the number of tracks
@@ -37,8 +37,8 @@ class FileReader(object):
     def parse_track_header(self, midifile):
         # First four bytes are Track header
         magic = midifile.read(4)
-        if magic != 'MTrk':
-            raise TypeError, "Bad track header in MIDI file: " + magic
+        if magic.decode('UTF-8') != 'MTrk':
+            raise TypeError("Bad track header in MIDI file: ", repr(magic))
         # next four bytes are track size
         trksz = unpack(">L", midifile.read(4))[0]
         return trksz
@@ -63,7 +63,7 @@ class FileReader(object):
         if MetaEvent.is_event(stsmsg):
             cmd = ord(trackdata.next())
             if cmd not in EventRegistry.MetaEvents:
-                warn("Unknown Meta MIDI Event: " + `cmd`, Warning)
+                warn("Unknown Meta MIDI Event: ", repr(cmd), Warning)
                 cls = UnknownMetaEvent
             else:
                 cls = EventRegistry.MetaEvents[cmd]
@@ -97,7 +97,7 @@ class FileReader(object):
                 channel = self.RunningStatus & 0x0F
                 data = [ord(trackdata.next()) for x in range(cls.length)]
                 return cls(tick=tick, channel=channel, data=data)
-        raise Warning, "Unknown MIDI Event: " + `stsmsg`
+        raise Warning("Unknown MIDI Event: ", repr(stsmsg))
 
 class FileWriter(object):
     def write(self, midifile, pattern):
@@ -146,17 +146,17 @@ class FileWriter(object):
                     ret += chr(event.statusmsg | event.channel)
             ret += str.join('', map(chr, event.data))
         else:
-            raise ValueError, "Unknown MIDI Event: " + str(event)
+            raise ValueError("Unknown MIDI Event: " + str(event))
         return ret
 
 def write_midifile(midifile, pattern):
-    if type(midifile) in (str, unicode):
-        midifile = open(midifile, 'wb')
+    # if type(midifile) in (str):
+    midifile = open(midifile, 'wb')
     writer = FileWriter()
     return writer.write(midifile, pattern)
 
 def read_midifile(midifile):
-    if type(midifile) in (str, unicode):
-        midifile = open(midifile, 'rb')
+    # if type(midifile) in (str):
+    midifile = open(midifile, 'rb')
     reader = FileReader()
     return reader.read(midifile)
